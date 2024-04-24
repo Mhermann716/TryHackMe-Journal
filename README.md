@@ -1,1 +1,1 @@
-# TryHackMe-Journal-Coming-Soon-
+# TryHackMe-Journal
