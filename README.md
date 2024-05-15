@@ -19,13 +19,4 @@ The objective of this TryHackMe journal is to document my learning journey in cy
 - Network analysis tools (such as Wireshark) for capturing and examining network traffic.
 - Telemetry generation tools to create realistic network traffic and attack scenarios.
 
-## Steps
-
-### Screenshots to come...
-drag & drop screenshots here or use imgur and reference them using imgsrc
-
-Every screenshot should have some text explaining what the screenshot is about.
-
-Example below.
-
-*Ref 1: Network Diagram*
+## Detailed steps can be found in each file.
