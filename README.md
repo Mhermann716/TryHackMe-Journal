@@ -16,17 +16,25 @@ The objective of this TryHackMe journal is to document my learning journey in cy
 
 - TryHackMe.com
 - Security Information and Event Management (SIEM) system for log ingestion and analysis.
-- Network analysis tools (such as Wireshark) for capturing and examining network traffic.
+- Network analysis tools (such as Wireshark/Splunk) for capturing and examining network traffic.
 - Telemetry generation tools to create realistic network traffic and attack scenarios.
 
 ## Detailed Notes for each room
 - <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 1</a>
-
-
-
-Important Takeaways:
-
-
-
-
-
+- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 2</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 3</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Intro to Logs</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Strength Training</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Wireshark Basics</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Wireshark 101</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 1</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 2</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 3</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Forensics 1</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Forensics 2</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Intro to Log Analysis</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk basiscs</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Incident Handling</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk 2</a>
+- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk 3</a>
+  
