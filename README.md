@@ -20,7 +20,7 @@ The objective of this TryHackMe journal is to document my learning journey in cy
 - Telemetry generation tools to create realistic network traffic and attack scenarios.
 
 ## Detailed Notes for each room
-- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 1</a>
+- <a href="[https://github.com/Mhermann716/SQL-Querys](https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%201%3A%20Linux%20Fundamentals%201)">Linux Fundementals 1</a>
 - <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 2</a>
 - <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 3</a>
 - <a href="https://github.com/Mhermann716/SQL-Querys">Intro to Logs</a>
