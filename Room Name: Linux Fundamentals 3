@@ -1,0 +1,20 @@
+### Date Completed: 04/23/2024 ###
+
+Command
+
+nano --Simple easy to use text editor
+vim --My preferred Text editor, many more features and uses CLI
+scp --Securely copy a file over SSH from one host to another.
+wget/curl --Package installer - Just two of many
+Systemctl -Systemctl <arg> <program> (Enable/Start/Stop)
+Ctrl + Z OR fg --Sends a program to run in the background/Foreground.
+
+
+Crontabs
+
+Command and program automation on a schedule. Backing up files using a date/time format.
+
+
+Important Takeaways:
+Scp is super easy to use while your ssh into another machine, and fast.
+CLI makes handling linux connections and files easy.
