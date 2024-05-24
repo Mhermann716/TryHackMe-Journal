@@ -21,20 +21,20 @@ The objective of this TryHackMe journal is to document my learning journey in cy
 
 ## Detailed Notes for each room
 - <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%201%3A%20Linux%20Fundamentals%201">Linux Fundementals 1</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 2</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Fundementals 3</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Intro to Logs</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Linux Strength Training</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Wireshark Basics</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Wireshark 101</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 1</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 2</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Fundementals 3</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Forensics 1</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Windows Forensics 2</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Intro to Log Analysis</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk basiscs</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Incident Handling</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk 2</a>
-- <a href="https://github.com/Mhermann716/SQL-Querys">Splunk 3</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%202%3A%20Linux%20Fundamentals%202">Linux Fundementals 2</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%203%3A%20Linux%20Fundamentals%203">Linux Fundementals 3</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%204%3A%20Intro%20to%20Logs">Intro to Logs</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%205%3A%20Linux%20Strength%20Training">Linux Strength Training</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%206%3A%20Wireshark%20Basics">Wireshark Basics</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%207%3A%20Wireshark%20101">Wireshark 101</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%208%3A%20Windows%20Fundamentals%201">Windows Fundementals 1</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%209%3A%20Windows%20Fundamentals%202">Windows Fundementals 2</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2010%3A%20Windows%20Fundamentals%203">Windows Fundementals 3</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2011%3A%20Windows%20Forensics%201">Windows Forensics 1</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2012%3A%20Windows%20Forensics%202">Windows Forensics 2</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2013%3A%20Intro%20to%20Log%20Analysis">Intro to Log Analysis</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2014%3A%20Splunk%20Basics">Splunk basiscs</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2015%3A%20Incident%20Handling">Incident Handling</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2016%3A%20Splunk%202">Splunk 2</a>
+- <a href="https://github.com/Mhermann716/TryHackMe-Journal/blob/main/Entry%2017%3A%20Splunk%203">Splunk 3</a>
   
