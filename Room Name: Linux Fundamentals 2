@@ -1,0 +1,28 @@
+### Date Completed: 04/23/2024 ###
+
+#### Notes During the Room ####
+Similar to how you have different versions of Windows (7, 8 and 10), there are many different versions/distributions of Linux.
+
+
+Command
+
+ssh --Secure Shell - Connect remotely to another device, a protocol between devices in an encrypted form. Using cryptography, any input we send in a human-readable format is encrypted for traveling over a network -- where it is then unencrypted once it reaches the remote machine
+ssh user@IPADDRESS > Password
+Switches & Flags --Argument provided to command “nano -help” would show all arguments for nano.
+
+
+Command Names
+
+Man (man pages) --List of all flags/switches for a particular command.
+
+File system commands
+
+Touch --Create file, Mkdir - create folder, cp - copy, mv - move, rm - remove, file - file
+su --Switch between available users
+Directories --/etc, /var, /root, /home,/tmp
+
+
+Important Takeaways:
+SSH is great for working inside of a server or remote host.
+Directories and Remote connections are easy to use with the CLI
+Already well versed in linux CLI commands.
