@@ -1,16 +1,18 @@
-### Date Completed: 12/20/2023
+### Date Completed: 12/20/2023 ###
 
 
-#### Notes During the Room:
+#### Notes During the Room ####
 Similar to how you have different versions of Windows (7, 8 and 10), there are many different versions/distributions of Linux.
 
 
 Command --Description
+
 echo --Output any text that we provide
 whoami --Find out what user we're currently logged in as!
 
 
 Command Full Names
+
 ls --listing
 cd --change directory
 cat --concatenate
