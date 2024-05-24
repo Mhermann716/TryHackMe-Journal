@@ -5,7 +5,7 @@
 Similar to how you have different versions of Windows (7, 8 and 10), there are many different versions/distributions of Linux.
 
 
-Command --Description
+Command Description
 
 echo --Output any text that we provide
 whoami --Find out what user we're currently logged in as!
@@ -20,6 +20,7 @@ pwd --print working directory
 
 
 Symbol / Operator
+
 & --This operator allows you to run commands in the background of your terminal.
 && --This operator allows you to combine multiple commands together in one line of your terminal.
 > --This operator is a redirector - meaning that we can take the output from a command (such as using cat to output a file) and direct it elsewhere.
@@ -27,7 +28,7 @@ Symbol / Operator
 
 
 Important Takeaways
+
 Linux is an OS, like Windows. There are many different versions of Linux that serve different purposes. 
 Linux systems rely more heavily on the command line to do tasks, like navigate the file system. 
 Same basic commands while working with files are ls, cd, cat and pwd
-
