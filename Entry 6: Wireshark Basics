@@ -1,7 +1,124 @@
-Date Completed: 
-Notes During the Room:
+# Wireshark Basics
 
+**Room Name:** Wireshark Basics  
+**Date Completed:** 05/31/2024
 
+## Notes During the Room:
 
+Wireshark is one of the most potent traffic analyzer tools available. It serves multiple purposes, including:
 
-Important Takeaways:
+- Detecting and troubleshooting network problems, such as network load failure points and congestion.
+- Detecting security anomalies, such as rogue hosts, abnormal port usage, and suspicious traffic.
+- Investigating and learning protocol details, such as response codes and payload data.
+
+**Note:** Wireshark is not an Intrusion Detection System (IDS). It only allows analysts to discover and investigate packets in depth. It does not modify packets; it reads them. Detecting anomalies or network problems relies heavily on the analyst's knowledge and investigation skills.
+
+![Wireshark](wireshark.png)
+
+## Loading PCAP Files
+
+![Loading PCAP Files](wireshark2.png)
+
+### Packet List Pane
+- Summary of each packet (source and destination addresses, protocol, and packet info).
+- Click on the list to choose a packet for further investigation. Once selected, the details will appear in the other panels.
+
+### Packet Details Pane
+- Detailed protocol breakdown of the selected packet.
+
+### Packet Bytes Pane
+- Hex and decoded ASCII representation of the selected packet.
+- Highlights the packet field depending on the clicked section in the details pane.
+
+## Coloring Packets
+
+![Coloring Packets](Wiresharkcoloring.png)
+
+Wireshark offers two types of packet coloring methods:
+- **Temporary rules:** Available only during a program session.
+- **Permanent rules:** Saved under the preference file (profile) and available in the next session.
+
+You can create permanent coloring rules via the "right-click menu" or "View → Coloring Rules" menu. The "Colorize Packet List" menu activates/deactivates the coloring rules. Temporary packet coloring can be done with the "right-click menu" or "View → Conversation Filter" menu (covered in TASK-5).
+
+## Traffic Sniffing
+
+![Traffic Sniffing](Wireshark3.png)
+
+- Use the blue "shark button" to start network sniffing (capturing traffic).
+- The red button stops the sniffing.
+- The green button restarts the sniffing process.
+- The status bar provides the used sniffing interface and the number of collected packets.
+
+## Merge PCAP Files
+
+![Merge PCAP Files](Wireshark4.png)
+
+Wireshark can combine two PCAP files into one. Use the "File → Merge" menu path to merge a PCAP with the processed one. When selecting the second file, Wireshark will show the total number of packets in the selected file. Click "open" to merge the existing PCAP file with the chosen one, creating a new PCAP file. Save the "merged" PCAP file before working on it.
+
+## File Details
+
+![File Details](Wireshark5.png)
+
+Knowing the file details is crucial, especially when working with multiple PCAP files. File details (file hash, capture time, capture file comments, interface, and statistics) help identify, classify, and prioritize the file. View details via "Statistics → Capture File Properties" or by clicking the "PCAP icon" at the bottom left of the window.
+
+## Dissecting Packets
+
+Also known as protocol dissection, this process involves investigating packet details by decoding available protocols and fields. Click on a packet in the packet list pane to open its details (double-click to open details in a new window). Packets consist of 5 to 7 layers based on the OSI model. Clicking a detail highlights the corresponding part in the packet bytes pane.
+
+### Layers:
+- Frame (L1)
+- Source [MAC] (L2)
+- Source [IP] (L3)
+- Protocol (L4)
+- Protocol Errors
+- Application Protocol (L5)
+- Application Data
+
+## Navigation
+
+Wireshark assigns a unique number to each packet, aiding the analysis process for large captures and simplifying navigation to specific events. Use the "Go" tab or CTRL+F to find packets, or "Edit → Find Packet".
+
+### Marking Packets
+Mark specific packets for further investigation using the "Edit" or "right-click" menu. This helps point to events of interest or export particular packets from the capture.
+
+### Comments per Packet
+Wireshark detects specific protocol states, helping analysts spot possible anomalies and problems. Note that these are only suggestions, with potential for false positives/negatives. Expert info provides categories in three severities:
+
+| Severity | Color | Info                                  |
+|----------|-------|---------------------------------------|
+| Chat     | Blue  | Information on usual workflow.        |
+| Note     | Cyan  | Notable events like application error codes. |
+| Warn     | Yellow| Warnings like unusual error codes or problem statements. |
+| Error    | Red   | Problems like malformed packets.      |
+
+### Frequently Encountered Information Groups:
+| Group     | Info                        |
+|-----------|-----------------------------|
+| Checksum  | Checksum errors.            |
+| Deprecated| Deprecated protocol usage.  |
+| Comment   | Packet comment detection.   |
+| Malformed | Malformed packet detection. |
+
+## Packet Filtering
+
+Wireshark has two filtering approaches: capture and display filters. Capture filters are used for "capturing" only the packets valid for the filter. Display filters are used for "viewing" the packets valid for the filter.
+
+### Apply as Filter
+The most basic way of filtering traffic. Click on the field to filter, then use the "right-click menu" or "Analyze → Apply as Filter" menu. Wireshark generates and applies the filter query, showing packets according to the selection and hiding unselected packets.
+
+### Conversation Filter
+Filters only a single entity of the packet. Helps view related packets and hide the rest, such as IP and port numbers.
+
+### Colorize Conversation
+Similar to "Conversation Filter" but highlights linked packets without applying a display filter. It works with the "Coloring Rules" option, changing packet colors without considering previously applied color rules.
+
+### Prepare as Filter
+Helps create display filters using the "right-click" menu. Adds the required query to the pane and waits for execution or another filtering option using the ".. and/or.." from the "right-click menu".
+
+### Apply as Column
+Add columns to the packet list pane using the "right-click menu" or "Analyze → Apply as Column" menu. Once applied, the column will be visible in the packet list pane. This helps examine the appearance of a specific value/field across the packets in the capture file. Enable/disable columns by clicking the top of the packet list pane.
+
+### Follow Stream
+Helps recreate application-level data and understand the event of interest. It is possible to view unencrypted protocol data like usernames, passwords, and other transferred data. Use the "right-click menu" or "Analyze → Follow TCP/UDP/HTTP Stream" menu to follow traffic streams. Streams are shown in a separate dialogue box; packets from the server are highlighted in blue, and those from the client in red. Wireshark automatically creates and applies the required filter to view the specific stream.
+
+---
