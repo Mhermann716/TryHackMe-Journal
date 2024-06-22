@@ -1,1 +1,270 @@
+Introduction to Computer Forensics for Windows**
+
+- **Computer Forensics Overview**
+  - Essential in cyber security for gathering evidence from digital devices.
+  - Applied in legal cases, corporate investigations, and incident analysis.
+
+- **Digital Forensics Case Example: BTK Serial Killer**
+  - Killer's taunts led to the recovery of crucial evidence from a floppy disk.
+  - Deleted files and metadata helped identify and arrest the killer.
+
+- **Importance of Windows in Forensics**
+  - Dominates with 80% market share in desktop OS.
+  - Critical to understand for forensic analysis due to widespread use.
+
+- **Forensic Artifacts**
+  - Essential digital evidence left on systems after user activity.
+  - Analogous to physical evidence at a crime scene, aiding in reconstructing events.
+
+- **Artifact Locations in Windows**
+  - Found in the Windows Registry, user profiles, and application-specific files.
+  - Used to reconstruct user actions and activities on the system.
+
+- **Privacy Concerns**
+  - Windows tracks user activities to personalize the user experience.
+  - This data also serves as forensic artifacts for investigations.
+
+**Journal Entry: Windows Registry Overview**
+
+- **Purpose and Content**
+  - Essential database holding system configuration data.
+  - Includes hardware, software, user information, recent activities, and connected devices.
+  - Crucial for forensic analysis to reconstruct system history.
+
+- **Structure and Components**
+  - Divided into Keys (folders) and Values (data within Keys).
+  - Registry Hive: Group of Keys, subkeys, and values stored in a file on disk.
+
+- **Root Keys Overview**
+  - **HKEY_CURRENT_USER**: User-specific settings like folders, screen colors.
+  - **HKEY_USERS**: All active user profiles; includes HKEY_CURRENT_USER.
+  - **HKEY_LOCAL_MACHINE**: Computer-specific configuration data.
+  - **HKEY_CLASSES_ROOT**: Links file types to programs for opening files.
+  - **HKEY_CURRENT_CONFIG**: Hardware profile used during system startup.
+
+- **Accessing and Viewing**
+  - Use `regedit.exe` via Windows Run prompt (`Windows key + R`).
+  - Tree view displays Keys; right pane shows Values with properties.
+
+Understanding the Windows Registry is crucial for digital forensics, as it provides detailed insights into system configurations and user activities, 
+aiding investigators in reconstructing events and identifying crucial evidence.
+
+
+Accessing and Analyzing Windows Registry**
+
+- **Accessing the Registry**
+  - Use `regedit.exe` on a live system to access standard root keys: HKEY_CURRENT_USER, HKEY_USERS, HKEY_LOCAL_MACHINE, HKEY_CLASSES_ROOT, HKEY_CURRENT_CONFIG.
+  - On disk images, locate registry hives in `C:\Windows\System32\Config`:
+    - **DEFAULT** (HKEY_USERS\DEFAULT)
+    - **SAM** (HKEY_LOCAL_MACHINE\SAM)
+    - **SECURITY** (HKEY_LOCAL_MACHINE\Security)
+    - **SOFTWARE** (HKEY_LOCAL_MACHINE\Software)
+    - **SYSTEM** (HKEY_LOCAL_MACHINE\System)
+
+- **User Profile Hives**
+  - For user-specific data:
+    - **NTUSER.DAT** (HKEY_CURRENT_USER) in `C:\Users\<username>\`
+    - **USRCLASS.DAT** (HKEY_CURRENT_USER\Software\CLASSES) in `C:\Users\<username>\AppData\Local\Microsoft\Windows`
+
+- **Special Hive: AmCache**
+  - Stores information on recently run programs.
+  - Located at `C:\Windows\AppCompat\Programs\Amcache.hve`.
+
+- **Transaction Logs and Backups**
+  - **Transaction Logs**: Capture registry changes not yet in hives; stored as `.LOG` files (e.g., `SAM.LOG`) alongside hives.
+  - **Registry Backups**: Located in `C:\Windows\System32\Config\RegBack`, updated every ten days; useful for recovering deleted or modified keys.
+
+Understanding these locations and files is critical in forensic analysis of Windows systems, 
+providing insights into user activities, system configurations, and recent changes.
+
+
+** Acquiring Registry Data for Forensic Analysis**
+
+- **Data Acquisition Process**
+  - Essential to image or copy system data for forensic accuracy.
+  - Known as data acquisition, ensures preservation of evidence.
+
+- **Acquisition Tools**
+  - **KAPE**: Command-line and GUI tool for live data acquisition, including registry data.
+  - **Autopsy**: Extracts data from live systems or disk images; offers intuitive GUI for file extraction.
+  - **FTK Imager**: Extracts files from disk images or live systems; mounts images for file export.
+    - **Export files**: Extracts registry hives.
+    - **Obtain Protected Files**: Specifically for live systems; extracts registry hives to specified location, excluding Amcache.hve.
+
+These tools provide robust methods to acquire registry data, crucial for forensic investigations.
+Choosing the right tool depends on whether data is being acquired from a live system or a disk image, 
+ensuring comprehensive analysis and preservation of digital evidence.
+
+
+**Journal Entry: Tools for Viewing Extracted Registry Data**
+
+- **Registry Viewer**
+  - AccessData's tool resembling Windows Registry Editor.
+  - Loads one hive at a time; does not incorporate transaction logs.
+
+- **Zimmerman's Registry Explorer**
+  - Developed by Eric Zimmerman for Digital Forensics.
+  - Loads multiple hives, integrates transaction log data for updated results.
+  - Features bookmarks for quick access to important registry keys.
+
+- **RegRipper**
+  - Utility for extracting data from registry hives.
+  - Generates sequential text reports of forensically relevant keys and values.
+  - Available in CLI and GUI forms but does not incorporate transaction logs.
+
+These tools are crucial for forensic analysts to view and extract information from registry hives, each offering unique capabilities suited for different aspects of forensic investigations.
+
+**Journal Entry: Key Locations for Forensic Analysis in the Registry**
+
+- **OS Version**
+  - Located at `SOFTWARE\Microsoft\Windows NT\CurrentVersion`.
+  - Provides OS version details crucial for understanding system environment.
+
+- **Current Control Set**
+  - Control Sets: `ControlSet001` (current boot) and `ControlSet002` (last known good).
+  - `CurrentControlSet` at `SYSTEM\Select\Current` determines active control set.
+  - `LastKnownGood` at `SYSTEM\Select\LastKnownGood` for previous known good configuration.
+
+- **Computer Name**
+  - Found at `SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName`.
+  - Identifies the machine being investigated.
+
+- **Time Zone Information**
+  - Located at `SYSTEM\CurrentControlSet\Control\TimeZoneInformation`.
+  - Essential for establishing accurate event timelines.
+
+- **Network Interfaces**
+  - Detailed at `SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\Interfaces`.
+  - Provides network configuration details (IP addresses, DHCP settings, etc.).
+
+- **Past Networks**
+  - `SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures`.
+  - Lists previously connected networks with connection timestamps.
+
+- **Autostart Programs (Autoruns)**
+  - Found in various locations:
+    - `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Run`
+    - `SOFTWARE\Microsoft\Windows\CurrentVersion\Run`
+    - Provides details on programs launching at user login or system startup.
+
+- **Services**
+  - Located at `SYSTEM\CurrentControlSet\Services`.
+  - Start key (`Start` value) indicates if a service starts at boot (0x02).
+
+- **SAM Hive and User Information**
+  - Contains user account details at `SAM\Domains\Account\Users`.
+  - Includes login statistics, password information, and group memberships.
+
+Understanding these registry locations is crucial for gathering system information, network details, autostart programs, service configurations, and user account data during forensic analysis. These insights aid in reconstructing events and identifying potential security issues or anomalies.
+
+**Journal Entry: Tracking Recent Activities in Windows Registry**
+
+- **Recent Files**
+  - Located at `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs`.
+  - Displays recently opened files, sorted by Most Recently Used (MRU).
+  - Specific file types listed under respective extensions like `.pdf`.
+
+- **Office Recent Files**
+  - Found in `NTUSER.DAT\Software\Microsoft\Office\VERSION`.
+  - Version-specific locations for Microsoft Office recent documents.
+  - Includes Office 365 tied to user's live ID for recent file paths.
+
+- **ShellBags**
+  - Stores folder layout preferences and MRU files.
+  - Located in user hives: `USRCLASS.DAT\Local Settings\Software\Microsoft\Windows\Shell` and `NTUSER.DAT\Software\Microsoft\Windows\Shell`.
+  - Tools like ShellBag Explorer parse and present data for analysis.
+
+- **Open/Save and LastVisited Dialog MRUs**
+  - Registry keys:
+    - `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePIDlMRU`
+    - `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU`.
+  - Remembered paths from file open/save dialogs and last visited locations.
+
+- **Windows Explorer Address/Search Bars**
+  - Reflects paths typed or searches conducted:
+    - `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths`
+    - `NTUSER.DAT\Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery`.
+
+Understanding these registry locations helps forensic analysts track recent activities, file accesses, and user interactions on Windows systems. Each key provides valuable insights for reconstructing user behavior and identifying critical digital evidence.
+
+**Journal Entry: Windows Forensics Artifacts**
+
+- **UserAssist:**
+  - Tracks applications launched via Windows Explorer.
+  - Stored in NTUSER hive at `...\UserAssist\{GUID}\Count`.
+  - Records program names, launch times, and execution counts.
+
+- **ShimCache (AppCompatCache):**
+  - Ensures application compatibility with OS.
+  - Located in `SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache`.
+  - Stores executable file details: name, size, last modified time.
+  - Parsed using AppCompatCache Parser for CSV output.
+
+- **AmCache:**
+  - Artifact related to ShimCache.
+  - Stores program execution path, installation, execution, deletion times, and SHA1 hashes.
+  - Located at `C:\Windows\appcompat\Programs\Amcache.hve`.
+  - Parsed similarly to ShimCache.
+
+- **BAM/DAM:**
+  - **BAM (Background Activity Monitor):**
+    - Monitors background app activity.
+    - Registry: `SYSTEM\CurrentControlSet\Services\bam\UserSettings\{SID}`.
+  - **DAM (Desktop Activity Moderator):**
+    - Optimizes power consumption.
+    - Registry: `SYSTEM\CurrentControlSet\Services\dam\UserSettings\{SID}`.
+
+These artifacts provide valuable insights into system usage and application history, crucial for forensic investigations.
+
+**Journal Entry: USB Device Forensics**
+
+- **Device Identification:**
+  - **USBSTOR:**
+    - Stores vendor id, product id, version, and connection time.
+    - Located at `SYSTEM\CurrentControlSet\Enum\USBSTOR`.
+  - **USB:**
+    - Contains similar device information.
+    - Found at `SYSTEM\CurrentControlSet\Enum\USB`.
+  - **Registry Explorer** presents this data clearly.
+
+- **First/Last Times:**
+  - **USBSTOR\Ven_Prod_Version\USBSerial#\Properties\{83da6326-97a6-4088-9453-a19231573b29}\####:**
+    - #### can be replaced with:
+      - 0064: First Connection time.
+      - 0066: Last Connection time.
+      - 0067: Last removal time.
+  - Registry Explorer simplifies access to these timestamps.
+
+- **USB Device Volume Name:**
+  - Located at `SOFTWARE\Microsoft\Windows Portable Devices\Devices`.
+  - Matches GUIDs from device identification keys.
+  - Provides names of connected drives.
+
+Understanding these registry keys and utilizing tools like Registry Explorer facilitates thorough investigation into connected USB devices, aiding in comprehensive forensic analysis.
+
+Certainly! Let's address the questions based on the scenario provided:
+
+1. **Identify User Accounts:**
+   - Navigate to the registry hive containing user profiles. Typically, this is located in `C:\Windows\System32\config`.
+   - Load the `SAM` and `SYSTEM` hives into RegistryExplorer from the triage folder.
+   - Explore `HKEY_LOCAL_MACHINE\SAM\SAM\Domains\Account\Users` to identify all user accounts present on the system.
+
+2. **Identify Network Drive Connections:**
+   - Look for information about network drives in the registry.
+   - Load the `SOFTWARE` and `SYSTEM` hives into RegistryExplorer.
+   - Navigate to `HKEY_CURRENT_USER\Network` or `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2` to find details about connected network drives.
+
+3. **Identify USB Device Connections:**
+   - Locate USB device information in the registry.
+   - Load the `SYSTEM` hive into RegistryExplorer.
+   - Look at `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Enum\USBSTOR` for records of connected USB devices.
+
+4. **Analysis Tools:**
+   - Use `RegistryExplorer` to load and analyze registry hives (`SAM`, `SYSTEM`, `SOFTWARE`).
+   - Use `AppCompatCacheParser.exe` from the EZtools folder to parse `AppCompatCache` (ShimCache) data.
+   - Use `EZViewer` to view parsed output from `AppCompatCacheParser`.
+
+Follow these steps to gather the necessary information from the triage data and provide the findings to Organization X. This approach leverages forensic tools effectively to investigate user accounts, network drive connections, and USB device history on the suspect system.
+
+
 
