@@ -2,20 +2,18 @@
 
 Windows has been a leading OS since 1985, dominating both home and corporate environments. Its widespread use makes it a primary target for hackers and malware.
 
-### TryHackMe Learning Journal: Windows Desktop and GUI Overview
-
 **Key Learnings:** Windows Versions
-- **Dominance and Targeting:** Windows, dominant since 1985, is a primary target for hackers and malware.
-- **Windows XP:** Popular but eventually phased out.
-- **Windows Vista:** Major overhaul but poorly received.
-- **Windows 7:** Replacement for XP; faced compatibility challenges.
-- **Windows 8.x:** Short-lived like Vista.
-- **Windows 10:** Previous desktop version, available in Home and Pro.
-- **Windows 11:** Current desktop version, available in Home, Pro and Enterprise.
-- **Windows Server 2019:** Current server version, used in the attached VM.
-- **End of Support:** Windows 10 support until at least October 14, 2025.
 
-### TryHackMe Learning Journal: Windows Desktop and GUI Overview
+- Windows, dominant since 1985, is a primary target for hackers and malware.
+   - Windows XP: Popular but eventually phased out.
+   - Windows Vista: Major overhaul but poorly received.
+   - Windows 7: Replacement for XP; faced compatibility challenges.
+   - Windows 8.x: Short-lived like Vista.
+   - Windows 10: Previous desktop version, available in Home and Pro.
+   - Windows 11: Current desktop version, available in Home, Pro and Enterprise.
+   - Windows Server 2019: Current server version, used in the attached VM.
+   - End of Support: Windows 10 support until at least October 14, 2025.
+
 
 **Key Learnings:** Desktop GUI
 
@@ -42,9 +40,8 @@ Windows has been a leading OS since 1985, dominating both home and corporate env
   - Located at the bottom right, showing the date, time, volume, and network icons.
   - Customizable in Taskbar settings to add or remove icons.
 
-### TryHackMe Learning Journal: NTFS File System and Permissions
 
-**Key Learnings:**
+**Key Learnings:** File System
 
 - **File Systems Overview:**
   - **NTFS (New Technology File System):** Used in modern Windows versions.
@@ -65,9 +62,7 @@ Windows has been a leading OS since 1985, dominating both home and corporate env
   - Not natively displayed in Windows Explorer.
   - Used by malware to hide data but also for legitimate purposes (e.g., identifying downloaded files).
 
-### TryHackMe Learning Journal: Windows User Accounts and Profiles
-
-**Key Learnings:**
+**Key Learnings:** Users and Profiles
 
 - **User Account Types:**
   - Administrator: Can perform system-level changes like adding/deleting users, modifying system settings.
@@ -85,9 +80,8 @@ Windows has been a leading OS since 1985, dominating both home and corporate env
   - Accessible via Run dialog (lusrmgr.msc) to manage local users and groups.
   - Groups have assigned permissions which users inherit upon group assignment.
 
-### TryHackMe Learning Journal: User Account Control (UAC) in Windows
 
-**Key Learnings:**
+**Key Learnings:** User Account Control
 
 - **Administrator Privileges:**
   - Many home users log in as local administrators, allowing them to make system changes.
@@ -105,9 +99,8 @@ Windows has been a leading OS since 1985, dominating both home and corporate env
   - Understand the importance of UAC in protecting systems from malware.
   - Experience UAC prompts and its impact on installing programs as both administrator and standard user accounts.
 
-### TryHackMe Learning Journal: Windows Settings and Control Panel
 
-**Key Learnings:**
+**Key Learnings:** Windows Settings and Control Panel
 
 - **Settings vs. Control Panel:**
   - **Control Panel:** Traditional interface for system changes, historically used for complex actions like printer setup and program uninstallation.
@@ -121,9 +114,8 @@ Windows has been a leading OS since 1985, dominating both home and corporate env
   - Start with Settings for simpler tasks like changing wallpaper.
   - Transition to Control Panel for more advanced configurations, such as network adapter options.
 
-### TryHackMe Learning Journal: Windows Task Manager
 
-**Key Learnings:**
+**Key Learnings:** Task Manager
 
 - **Task Manager Overview:**
   - Provides real-time information on running applications, processes, CPU, and RAM usage.
