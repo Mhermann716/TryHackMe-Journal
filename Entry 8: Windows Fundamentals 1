@@ -1,1 +1,135 @@
+# Windows Operating System Overview
+
+Windows has been a leading OS since 1985, dominating both home and corporate environments. Its widespread use makes it a primary target for hackers and malware.
+
+### TryHackMe Learning Journal: Windows Desktop and GUI Overview
+
+**Key Learnings:** Windows Versions
+- **Dominance and Targeting:** Windows, dominant since 1985, is a primary target for hackers and malware.
+- **Windows XP:** Popular but eventually phased out.
+- **Windows Vista:** Major overhaul but poorly received.
+- **Windows 7:** Replacement for XP; faced compatibility challenges.
+- **Windows 8.x:** Short-lived like Vista.
+- **Windows 10:** Previous desktop version, available in Home and Pro.
+- **Windows 11:** Current desktop version, available in Home, Pro and Enterprise.
+- **Windows Server 2019:** Current server version, used in the attached VM.
+- **End of Support:** Windows 10 support until at least October 14, 2025.
+
+### TryHackMe Learning Journal: Windows Desktop and GUI Overview
+
+**Key Learnings:** Desktop GUI
+
+- **Windows Desktop:**
+  - The screen that welcomes you after logging into Windows 10.
+  - Provides quick access to shortcuts, programs, folders, and files.
+  - Customizable through right-click options, allowing changes to icon sizes, arrangement, and adding new items.
+  - Display settings allow changes to screen resolution, orientation, and multi-screen setup.
+  - Personalize settings for changing wallpaper, fonts, themes, and color schemes.
+
+- **Start Menu:**
+  - Accessed via the Windows logo at the bottom left of the screen.
+  - Sections include:
+    - **Account Actions:** Modify user account settings, lock the screen, sign out, and access Documents and Pictures folders.
+    - **Recently Added and Installed Apps:** Lists recently added and all installed apps, organized alphabetically.
+    - **Tiles Section:** Icons for specific apps or utilities that can be customized, resized, or removed.
+
+- **Taskbar:**
+  - Displays open apps, programs, and files.
+  - Provides preview thumbnails and tooltips when hovering over icons.
+  - Customizable by right-clicking to bring up a context menu for modifications.
+
+- **Notification Area:**
+  - Located at the bottom right, showing the date, time, volume, and network icons.
+  - Customizable in Taskbar settings to add or remove icons.
+
+### TryHackMe Learning Journal: NTFS File System and Permissions
+
+**Key Learnings:**
+
+- **File Systems Overview:**
+  - **NTFS (New Technology File System):** Used in modern Windows versions.
+  - **FAT16/FAT32 and HPFS:** Predecessors of NTFS, still used in USB devices and MicroSD cards.
+
+- **NTFS Features:**
+  - **Journaling File System:** Can automatically repair files using log information.
+  - **Supports Large Files:** Handles files larger than 4GB.
+  - **Permissions:** Allows setting specific permissions on files and folders.
+  - **Compression and Encryption:** Supports folder/file compression and encryption (EFS).
+
+- **NTFS Permissions:**
+  - Types: Full control, Modify, Read & Execute, List folder contents, Read, Write.
+  - How to View: Right-click file/folder > Properties > Security tab.
+
+- **Alternate Data Streams (ADS):**
+  - Allows files to contain multiple data streams.
+  - Not natively displayed in Windows Explorer.
+  - Used by malware to hide data but also for legitimate purposes (e.g., identifying downloaded files).
+
+### TryHackMe Learning Journal: Windows User Accounts and Profiles
+
+**Key Learnings:**
+
+- **User Account Types:**
+  - Administrator: Can perform system-level changes like adding/deleting users, modifying system settings.
+  - Standard User: Limited to making changes within their own user folders, cannot install programs or modify system settings.
+
+- **Managing User Accounts:**
+  - As an Administrator, access "Other users" in System Settings to manage user accounts.
+  - Options include adding users, changing account types, and removing accounts.
+
+- **User Profiles:**
+  - User profiles are stored in C:\Users and created upon initial login.
+  - Each profile contains standard folders like Desktop, Documents, Downloads, Music, and Pictures.
+
+- **Local User and Group Management:**
+  - Accessible via Run dialog (lusrmgr.msc) to manage local users and groups.
+  - Groups have assigned permissions which users inherit upon group assignment.
+
+### TryHackMe Learning Journal: User Account Control (UAC) in Windows
+
+**Key Learnings:**
+
+- **Administrator Privileges:**
+  - Many home users log in as local administrators, allowing them to make system changes.
+
+- **User Account Control (UAC):**
+  - Introduced by Microsoft to mitigate risks associated with running with elevated privileges.
+  - Not applicable by default to the built-in local administrator account.
+
+- **How UAC Works:**
+  - Administrators log in with standard user privileges initially.
+  - Prompts users to confirm operations requiring elevated permissions.
+  - Reduces malware risk by preventing unauthorized system changes without user consent.
+
+- **Practical Application:**
+  - Understand the importance of UAC in protecting systems from malware.
+  - Experience UAC prompts and its impact on installing programs as both administrator and standard user accounts.
+
+### TryHackMe Learning Journal: Windows Settings and Control Panel
+
+**Key Learnings:**
+
+- **Settings vs. Control Panel:**
+  - **Control Panel:** Traditional interface for system changes, historically used for complex actions like printer setup and program uninstallation.
+  - **Settings:** Introduced in Windows 8 and now the primary interface in Windows 10 for system configurations.
+
+- **Accessing Settings and Control Panel:**
+  - Both accessible from the Start Menu, though Settings is now more prominent.
+  - Control Panel remains essential for accessing more intricate settings not fully transitioned to Settings.
+
+- **Example Usage:**
+  - Start with Settings for simpler tasks like changing wallpaper.
+  - Transition to Control Panel for more advanced configurations, such as network adapter options.
+
+### TryHackMe Learning Journal: Windows Task Manager
+
+**Key Learnings:**
+
+- **Task Manager Overview:**
+  - Provides real-time information on running applications, processes, CPU, and RAM usage.
+  - Accessible by right-clicking the taskbar and selecting Task Manager.
+
+- **Features of Task Manager:**
+  - **Simple View:** Basic display of running applications.
+  - **Detailed View:** Provides comprehensive information on applications, processes, performance metrics like CPU and RAM utilization.
 
