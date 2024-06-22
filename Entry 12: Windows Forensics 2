@@ -1,1 +1,220 @@
+1.   File Systems and Artifacts:  
+   -   NTFS (New Technology File System):  
+     -   Master File Table (MFT):   Contains metadata for files such as creation time, access times, and ownership.
+     -   $LogFile:   Records transactions for file changes.
+     -   $UsnJrnl:   Maintains change  entries including file creations, deletions, and modifications.
+   
+   -   FAT (File Allocation Table):  
+     -   Directory Entries:   Store file metadata like timestamps and size.
+     -   File Allocation Table (FAT):   Tracks file allocation across the disk.
+   
+   -   ReFS (Resilient File System):  
+     -   Metadata:   Stores file attributes and integrity information.
+     -   Integrity Streams:   Checksums for data integrity.
+   
+2.   Locations for Artifact Analysis:  
+   -   Recycle Bin:   Contains deleted files and their original paths.
+   -   Prefetch:   Records details of executed applications for performance optimization.
+   -   Jump Lists:   Stores recently accessed files and application history.
+   -   ShellBags:   Tracks folder navigation and window positions.
+   -   $LogFile and $UsnJrnl:   Logs file system activity.
+   -   Volume Shadow Copies:   Snapshots of files at different points in time.
 
+3.   Deleted File Recovery:  
+   - Use tools like   Autopsy   to:
+     - Analyze disk images for deleted files.
+     - Recover file metadata and content from unallocated clusters.
+     - Reconstruct file paths and access timestamps.
+
+By leveraging these file system artifacts and tools like Autopsy and Eric Zimmerman's utilities, forensic investigators can reconstruct events, establish timelines of activities, and gather crucial evidence in digital investigations beyond just the Windows registry. This comprehensive approach enhances the ability to uncover and analyze forensic evidence effectively.
+
+The File Allocation Table (FAT) file system has evolved significantly over the years to meet the demands of varying storage needs and technological advancements:
+
+-   Data Structures of FAT File System:  
+  -   Clusters:   Basic storage units where file data is stored, organized into groups.
+  -   Directory:   Stores file metadata like filename, starting cluster, and length.
+  -   File Allocation Table:   Linked list of clusters, tracking their usage status and pointers to next clusters.
+
+-   Variants: FAT12, FAT16, FAT32:  
+  -   FAT12:   12-bit cluster addressing, supports up to 4,096 clusters, maximum volume size of 32MB.
+  -   FAT16:   16-bit cluster addressing, supports up to 65,536 clusters, maximum volume size of 2GB.
+  -   FAT32:   28-bit cluster addressing, supports up to 268,435,456 clusters, maximum volume size of 2TB (limited to 32GB by Windows for formatting).
+
+-   Limitations and Usage:  
+  -   FAT12:   Rarely encountered today due to its small maximum volume size.
+  -   FAT16 and FAT32:   Still used in devices like USB drives and SD cards, despite limitations on maximum file size (4GB).
+  -   exFAT File System:   Developed by Microsoft to overcome FAT32's file size limitations, supports cluster sizes from 4KB to 32MB, and handles up to 128PB for both file and volume sizes.
+
+-   Advantages of exFAT:  
+  - Widely adopted for digital media devices due to its high maximum file size and volume size.
+  - Efficient and lighter than NTFS, tailored for devices not needing advanced security features.
+
+The evolution from FAT to exFAT reflects the need for file systems to adapt to larger storage capacities and file sizes demanded by modern digital devices, ensuring compatibility and efficiency without unnecessary overhead.
+
+To effectively use MFTECmd.exe to parse NTFS file system artifacts, follow these steps based on the provided instructions:
+
+1.   Accessing the Environment:  
+   - Start the provided VM and log in using the credentials (Username: thm-4n6, Password: 123).
+   - Open an elevated command prompt by right-clicking Command Prompt and selecting "Run as Administrator".
+
+2.   Navigating to the EZtools Directory:  
+   - In the command prompt, navigate to `C:\Users\THM-4n6\Desktop\Eztools`.
+
+3.   Using MFTECmd.exe:  
+   - Execute `MFTECmd.exe` with the appropriate parameters to analyze NTFS artifacts:
+     ```
+     MFTECmd.exe -f <path-to-$MFT-file> --csv <path-to-save-results-in-csv>
+     ```
+     - Replace `<path-to-$MFT-file>` with the path to your `$MFT` file.
+     - Replace `<path-to-save-results-in-csv>` with the directory and filename where you want to save the CSV results.
+
+4.   Parameters and Options:  
+   -   -f   specifies the NTFS file to process (e.g., `$MFT`, `$J`, `$LogFile`, etc.).
+   -   --csv   specifies the directory to save the results in CSV format.
+   - Additional options like `--json`, `--body`, `--de`, `--vss`, etc., allow for different output formats and detailed analysis.
+
+5.   Output Analysis:  
+   - Once executed, MFTECmd will parse the specified NTFS artifact and generate a CSV file containing structured data.
+   - Use this CSV file to analyze details such as file metadata, timestamps, and other forensic information related to the NTFS file system.
+
+6.   Example Command:  
+   - For parsing the `$MFT` file located at `C:\ForensicImages\SystemImage\Evidence\$MFT` and saving the results to `C:\ForensicResults\MFT_Results.csv` in CSV format:
+     ```
+     MFTECmd.exe -f "C:\ForensicImages\SystemImage\Evidence\$MFT" --csv "C:\ForensicResults\MFT_Results.csv"
+     ```
+
+7.   Further Analysis:  
+   - Review the generated CSV using tools like Excel or specialized forensic analysis software to extract insights such as file paths, timestamps, and relationships between files stored in the NTFS file system.
+
+By following these steps, you can effectively utilize MFTECmd.exe to extract and analyze NTFS file system artifacts crucial for forensic investigations.
+
+Steps to run.
+
+1.   Launch Autopsy:  
+   - Double-click the Autopsy icon on the Desktop to start the application.
+
+2.   Create a New Case:  
+   - Click on 'New Case' and enter a name for your case. Click 'Next' and then 'Finish' to proceed.
+
+3.   Add Data Source:  
+   - Autopsy will prompt you to add a data source. Choose 'Disk Image or VM File' since we're working with a disk image.
+   - Provide the location of the disk image file named 'usb.001' located on the Desktop. Click 'Next' to continue.
+
+4.   Select Modules:  
+   - Autopsy will display modules that can be enabled for processing. For recovering deleted files quickly, click 'Deselect All' to disable unnecessary modules. Click 'Next' to proceed.
+
+5.   Load Disk Image:  
+   - Autopsy will load the disk image 'usb.001'. This process may take some time depending on the size of the image.
+
+6.   Navigate Data Sources:  
+   - In the left panel, under 'Data Sources', expand the entry for 'usb.001'. Autopsy will display the contents of the disk image in the right panel.
+
+7.   Identify Deleted Files:  
+   - Deleted files are marked with an 'X' symbol next to their names in Autopsy. Look for files with this mark to identify deleted files.
+
+8.   Recover Deleted Files:  
+   - To recover a deleted file, right-click on the file with the 'X' mark and select 'Extract File(s)' from the context menu.
+   - Choose a destination on the VM where you want to save the recovered file.
+
+9.   Review and Analysis:  
+   - Use the lower tab in Autopsy to view details about the selected files, such as metadata and attributes.
+
+10.   Further Actions:  
+    - Explore other options and features in Autopsy to analyze recovered files and gather forensic evidence as needed.
+
+By following these steps, you can effectively use Autopsy to recover deleted files from the disk image 'usb.001' provided on the Desktop of the VM. This process helps in forensic investigations by retrieving potentially valuable information that might have been deleted but still recoverable from the disk image.
+
+
+Certainly! Here's a detailed guide on how to use Eric Zimmerman's tools (PECmd.exe, WxTCmd.exe, and JLECmd.exe) to analyze artifacts related to program execution on a Windows system for forensic investigations:
+
+### 1. Prefetch Files with PECmd.exe
+
+  Prefetch files   in Windows store information about the execution of programs to optimize their loading times.
+
+-   Command Syntax for PECmd.exe:  
+  - `PECmd.exe -f <path-to-Prefetch-file> --csv <path-to-save-csv>`
+
+  - `-f`: Specify the path to the Prefetch file.
+  - `--csv`: Specify the directory to save the CSV formatted results.
+
+-   Example Command for Prefetch Files:  
+  - `PECmd.exe -f "C:\Windows\Prefetch\CALC.EXE-3FBEF7FD.pf" --csv "C:\Temp"`
+
+### 2. Windows 10 Timeline with WxTCmd.exe
+
+  Windows 10 Timeline   stores information about recently used applications and files in an SQLite database.
+
+-   Command Syntax for WxTCmd.exe:  
+  - `WxTCmd.exe -f <path-to-timeline-file> --csv <path-to-save-csv>`
+
+  - `-f`: Specify the path to the ActivitiesCache.db file.
+  - `--csv`: Specify the directory to save the CSV formatted results.
+
+-   Example Command for Windows 10 Timeline:  
+  - `WxTCmd.exe -f "C:\Users\eric\AppData\Local\ConnectedDevicesPlatform\L.eric\ActivitiesCache.db" --csv "C:\Temp"`
+
+### 3. Windows Jump Lists with JLECmd.exe
+
+  Windows Jump Lists   provide quick access to recently used files associated with applications.
+
+-   Command Syntax for JLECmd.exe:  
+  - `JLECmd.exe -f <path-to-Jumplist-file> --csv <path-to-save-csv>`
+
+  - `-f`: Specify the path to the Jumplist (.automaticDestinations-ms or .customDestinations-ms) file.
+  - `--csv`: Specify the directory to save the CSV formatted results.
+
+-   Example Command for Windows Jump Lists:  
+  - `JLECmd.exe -f "C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\f01b4d95cf55d32a.automaticDestinations-ms" --csv "C:\Temp"`
+
+### Notes:
+- Replace `<path-to-Prefetch-file>`, `<path-to-timeline-file>`, and `<path-to-Jumplist-file>` with the actual paths to the respective artifacts on your system.
+- Ensure to specify a valid output directory for `--csv` where the generated CSV files will be saved.
+- These tools help extract and analyze crucial forensic evidence related to program execution and file access on a Windows system, aiding in investigations where such information is pertinent.
+
+By using these commands and tools, forensic investigators can gather detailed insights into the activities and usage patterns on a Windows machine, supporting their analysis and conclusions effectively.
+
+
+  Forensic Artifact Analysis  
+
+-   Shortcut Files  
+  -   Description  : Windows creates .lnk shortcut files for each opened file, locally or remotely, storing details like first and last accessed times.
+  -   Locations  :
+    - `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\`
+    - `C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\`
+  -   Tool  : Use `LECmd.exe` from Eric Zimmerman to parse these files.
+    - Command: `LECmd.exe -f <path-to-shortcut-file> --csv <path-to-save-csv>`
+
+-   IE/Edge History  
+  -   Description  : Includes system files accessed, regardless of whether they were opened via the browser.
+  -   Location  : `C:\Users\<username>\AppData\Local\Microsoft\Windows\WebCache\WebCacheV .dat`
+  -   Tool  : Use Autopsy in the attached VM to analyze WebCache data.
+    - Select 'Logical Files' as data source and navigate to the triage folder.
+
+-   Jump Lists  
+  -   Description  : Lists recently opened files and executed programs.
+  -   Location  : `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations`
+  -   Tool  : Previously covered using `JLECmd.exe` for parsing.
+
+-   Triage Data Analysis  
+  -   Location  : `C:\Users\THM-4n6\Desktop\triage\C\`
+  -   Procedure  : Use Autopsy to examine recent activity.
+    - Select 'Recent Activity' module during ingestion for detailed analysis.
+
+Key artifacts used in forensic investigations to trace file access and program execution on Windows systems, leveraging specific tools and locations for analysis.
+
+
+  Forensic Artifact Analysis
+
+-   Setupapi.dev.log for USB Devices  
+  -   Description  : Stores setup information of newly attached devices, including device serial number and connection timestamps.
+  -   Location  : `C:\Windows\inf\setupapi.dev.log`
+  -   Usage  : Provides crucial details for tracking USB device connections and activities.
+
+-   Shortcut Files  
+  -   Description  : Automatically generated by Windows for locally or remotely opened files, potentially containing details about connected USB devices.
+  -   Locations  :
+    - `C:\Users\<username>\AppData\Roaming\Microsoft\Windows\Recent\`
+    - `C:\Users\<username>\AppData\Roaming\Microsoft\Office\Recent\`
+  -   Information  : Includes volume name, type, and serial number of connected USB devices, aiding in forensic investigations.
+
+ Essential artifacts used in forensic examinations to trace USB device connections and file access on Windows systems, highlighting pertinent locations and their relevance in investigations.
