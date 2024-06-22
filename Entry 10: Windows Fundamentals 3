@@ -1,1 +1,131 @@
+Journal Entry: Windows Update Overview
 
+- Purpose: Windows Update by Microsoft ensures security updates, feature enhancements, and patches for Windows OS and Microsoft products.
+  
+- Schedule: Updates typically released on Patch Tuesday (2nd Tuesday monthly); urgent updates can be pushed immediately.
+  
+- Access: Available in Settings or via Run dialog (`control /name Microsoft.WindowsUpdate`).
+  
+- User Behavior:
+  - Historically, users postponed or skipped updates due to required reboots.
+  - With Windows 10, updates can only be postponed temporarily; eventual installation and reboot are mandatory.
+  
+- Impact: Updates crucial for device security and stability; restart options provided for user convenience.
+
+Windows Security
+
+- Purpose: Windows Security, managed by Microsoft, centralizes device and data protection tools.
+  
+- Access: Found in Settings; accessible for managing security features.
+  
+- Protection Areas:
+  - Virus & threat protection
+  - Firewall & network protection
+  - App & browser control
+  - Device security
+  
+- Status Icons:
+  - Green: Device adequately protected; no recommended actions.
+  - Yellow: Safety recommendation available for review.
+  - Red: Urgent attention needed.
+  
+- Windows Server 2019 VM:
+  - Different interface compared to Windows 10 editions.
+  
+- Action: Click 'Open Windows Security' for detailed management.
+
+
+Virus & Threat Protection Overview
+
+- Current Threats:
+  - Scan Options:
+    - Quick Scan: Checks common threat areas.
+    - Full Scan: Checks all files, may take over an hour.
+    - Custom Scan: Allows selection of specific files and locations.
+  - Threat History:
+    - Last Scan: Automated scan for viruses and threats.
+    - Quarantined Threats: Isolated threats, scheduled for removal.
+    - Allowed Threats: Identified threats allowed to run cautiously.
+  
+- Virus & Threat Protection Settings:
+  - Manage Settings:
+    - Real-time Protection: Detects and stops malware in real-time.
+    - Cloud-delivered Protection: Rapid access to latest threat data from the cloud.
+    - Automatic Sample Submission: Sends samples to enhance protection.
+    - Controlled Folder Access: Guards files from unauthorized changes.
+    - Exclusions: Items exempt from antivirus scans.
+    - Notifications: Critical alerts about device health and security.
+  - Updates:
+    - Check for Updates: Manually updates antivirus definitions.
+  - Ransomware Protection:
+    - Requires Real-time Protection and Controlled Folder Access enabled.
+  
+- Action: Enable Real-time Protection on personal devices unless equivalent third-party protection is installed and active. Keep antivirus updated and perform on-demand scans when needed.
+
+
+Firewall & Network Protection Overview
+
+- Definition: A firewall controls traffic entering and exiting devices via ports, akin to a security guard checking IDs at a door.
+
+- Access: Navigate to Firewall & Network Protection in settings to manage firewall configurations.
+
+- Firewall Profiles:
+  - Domain: Applies to networks where system can authenticate to a domain controller.
+  - Private: Used for designated private or home networks.
+  - Public: Default for public networks like Wi-Fi hotspots.
+  
+- Profile Settings:
+  - Each profile offers options to toggle firewall on/off and block all incoming connections.
+
+- Allow App through Firewall:
+  - Apps can be allowed through specific firewall profiles; detailed settings available via the Details button.
+
+- Advanced Settings:
+  - Configuring Windows Defender Firewall is recommended for advanced users; refer to Microsoft documentation for best practices.
+
+- Warning: Unless certain, it's advisable to keep Windows Defender Firewall enabled for security.
+
+
+Microsoft Defender SmartScreen and Exploit Protection
+
+- Microsoft Defender SmartScreen:
+  - Protects against phishing, malware websites, and potentially malicious downloads.
+  
+- Check Apps and Files:
+  - SmartScreen verifies unrecognized apps and files from the web to safeguard your device.
+  
+- Exploit Protection:
+  - Built-in defense in Windows 10 and Windows Server 2019 against various types of attacks.
+  
+- Warning: Default settings should generally be maintained unless fully informed about the implications.
+
+
+Core Isolation and Trusted Platform Module (TPM)
+
+- Core Isolation:
+  - Memory Integrity: Guards against malicious code injections into high-security processes.
+  - Default settings are recommended for non-experts due to potential security risks.
+  
+- Security Processor (TPM):
+  - Trusted Platform Module (TPM):
+    - Provides hardware-based security functions.
+    - TPM chip ensures tamper-resistant cryptographic operations, safeguarding against malicious software.
+  
+- Warning: Changing default settings should only be considered with full understanding of potential implications.
+
+
+Volume Shadow Copy Service (VSS)
+
+- Functionality: VSS manages creating consistent snapshots (shadow copies) of data for backup purposes.
+  
+- Storage: Shadow copies are stored in the System Volume Information folder on protected drives.
+  
+- System Protection Tasks:
+  - Create a Restore Point
+  - Perform System Restore
+  - Configure Restore Settings
+  - Delete Restore Points
+  
+- Security Note: Malware can target and delete VSS files, hindering recovery from attacks like ransomware unless offline backups are available.
+  
+- Bonus: Explore hands-on interaction with VSS in Day 23 of Advent of Cyber 2 for practical learning.
