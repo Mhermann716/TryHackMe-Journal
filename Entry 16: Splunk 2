@@ -1,1 +1,199 @@
+### Date Completed: 04/23/2024 ###
 
+### **100 Series Questions**
+
+1. **Find Amber’s IP Address:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="pan:traffic" amber
+   ```
+   - **Answer:** Amber's IP Address was identified.
+
+2. **Identify the Competitor Website Amber Visited:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="stream:HTTP" "10.0.2.101" 
+   | dedup site 
+   | table site
+   ```
+   - **Website Domain:** `www.berkbeer.com`.
+
+3. **Find the Image File with Executive Contact Information:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="stream:HTTP" "10.0.2.101" berkbeer.com
+   ```
+   - **Image File:** `/images/ceoberk.png`.
+
+4. **Find the CEO’s Name:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="stream:smtp" berkbeer.com "aturing@froth.ly"
+   ```
+   - **CEO Name:** Martin Berk.
+
+5. **Find the CEO’s Email Address:**
+
+   - **Email:** `mberk@berkbeer.com`.
+
+6. **Find the Email of the Another Employee Contacted:**
+
+   - **Email:** `hbernhard@berkbeer.com`.
+
+7. **Find the Name of the File Attachment Amber Sent:**
+
+   - **File Attachment:** `Saccharomyces_cerevisiae_patent.docx`.
+
+8. **Find Amber’s Personal Email Address:**
+
+   - **Email:** `ambersthebest@yeastiebeastie.com`.
+
+### **200 Series Questions**
+
+1. **Version of TOR Browser Installed:**
+
+   Query:
+   ```spl
+   index="botsv2" amber tor
+   ```
+   - **Version:** `7.0.4`.
+
+2. **Public IPv4 Address of www.brewertalk.com:**
+
+   Query:
+   ```spl
+   index="botsv2" brewertalk.com dest_port=80
+   ```
+   - **IP Address:** `52.42.208.228`.
+
+3. **IP Address Used to Run Web Vulnerability Scan:**
+
+   Query:
+   ```spl
+   index="botsv2" www.brewertalk.com
+   ```
+   - **IP Address:** `45.77.65.211`.
+
+4. **URI Path Attacked by IP Address from Previous Question:**
+
+   Query:
+   ```spl
+   index="botsv2" src_ip="45.77.65.211"
+   ```
+   - **URI Path:** `/member.php`.
+
+5. **SQL Function Abused on URI Path:**
+
+   Query:
+   ```spl
+   index="botsv2" src_ip="45.77.65.211" uri_path="/member.php"
+   ```
+   - **SQL Function:** `updatexml`.
+
+6. **Cookie Value Transmitted as Part of XSS Attack:**
+
+   Query:
+   ```spl
+   index="botsv2" kevin sourcetype="stream:http" (script OR document) uri_path="*\.php"
+   ```
+   - **Cookie Value:** `1502408189`.
+
+7. **Username Created by Spear Phishing Attack:**
+
+   - **Username:** `kIagerfield`.
+
+### **300 Series Questions**
+
+1. **Name of the Encrypted PowerPoint File:**
+
+   Query:
+   ```spl
+   index="botsv2" host="MACLORY-AIR13" (*.pptx OR *.pptm OR *.ppt)
+   ```
+   - **Encrypted File:** `Frothly_marketing_campaign_Q317.pptx.crypt`.
+
+2. **Season and Episode of Encrypted ‘Game of Thrones’ Movie File:**
+
+   Query:
+   ```spl
+   index="botsv2" host="MACLORY-AIR13" (got OR game OR thrones) crypt
+   ```
+   - **Season and Episode:** `S07E02`.
+
+3. **Vendor Name of USB Drive Used by Kevin:**
+
+   Query:
+   ```spl
+   index="botsv2" kutekitten usb tag=usb vendor
+   ```
+   - **Vendor:** Alcor Micro Corp.
+
+4. **Programming Language Used in Malware:**
+
+   Query:
+   ```spl
+   index="botsv2" kutekitten mkraeusen name=file_events
+   ```
+   - **Language:** Perl.
+
+5. **Date When Malware Was First Seen in the Wild:**
+
+   - **Date:** `2017-01-17`.
+
+6. **First C&C Server FQDN Contacted:**
+
+   - **FQDN:** `eidk.duckdns.org`.
+
+7. **Second C&C Server FQDN Contacted:**
+
+   - **FQDN:** `eidk.hopto.org`.
+
+### **400 Series Questions**
+
+1. **Name of the Zip File Sent by Taedonggang:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="stream:smtp" attachment *.zip
+   ```
+   - **Attachment Name:** `invoice.zip`.
+
+2. **Password to Open the Zip File:**
+
+   - **Password:** `912345678`.
+
+3. **SSL Issuer Used by Taedonggang APT Group:**
+
+   Query:
+   ```spl
+   index="botsv2" SSL 45.77.65.211
+   ```
+   - **SSL Issuer:** `C = US`.
+
+4. **Unusual File Downloaded by winsys32.dll:**
+
+   Query:
+   ```spl
+   index="botsv2" sourcetype="stream:ftp" loadway=Download
+   ```
+   - **File:** `나는_데이비드를_사랑한다.hwp`.
+
+5. **Name of the Person Implicated in Metadata of PowerShell Empire Execution:**
+
+   - **Name:** Ryan Kovar.
+
+6. **Mentioned Points in Document:**
+
+   - **Points:** CyberEastEgg.
+
+7. **Most Contacted Webpage by Scheduled Tasks:**
+
+   - **Webpage:** `/login.php`.
+
+---
+
+This comprehensive set of questions and queries provides a detailed walkthrough for solving the BOTS v2 challenges on TryHackMe, including leveraging Splunk queries and threat intelligence platforms.
