@@ -1,1 +1,319 @@
+### Date Completed: 04/23/2024 ###
 
+**Journal Entry: Incident Handling and SOC Analysis**
+
+- **Preparation**: 
+  - **Description**: Ensure organizational readiness by documenting requirements, defining policies, implementing security controls (EDR, SIEM, IDS, IPS), and training staff.
+
+- **Detection and Analysis**: 
+  - **Description**: Detect incidents using security controls and investigate alerts to determine the root cause. Includes threat hunting for unknown threats.
+
+- **Containment, Eradication, and Recovery**: 
+  - **Description**: Take actions to prevent incident spread, isolate infected hosts, remove infection traces, and regain control of the network.
+
+- **Post-Incident Activity / Lessons Learnt**: 
+  - **Description**: Identify and address security weaknesses, update detection rules, and train staff to prevent future incidents.
+
+**Journal Entry: Investigation of Cyber Attack at Wayne Enterprises**
+
+- **Cyber Kill Chain Model**:
+  - **Description**: Map attacker activities across phases: Reconnaissance, Weaponization, Delivery, Exploitation, Installation, Command & Control, and Actions on Objectives. Use OSINT as needed.
+
+- **Scenario**:
+  - **Description**: Wayne Enterprises’ website was defaced with the message "YOUR SITE HAS BEEN DEFACED." Investigation required to determine how attackers accessed and acted within the network.
+
+- **Investigation Focus**:
+  - **Phase**: Detection and Analysis.
+  - **Tool**: Splunk SIEM, with logs from webserver/firewall/Suricata/Sysmon, etc.
+
+- **Log Sources**:
+  - **wineventlog**: Windows Event logs.
+  - **winRegistry**: Registry changes.
+  - **XmlWinEventLog**: Sysmon event logs.
+  - **fortigate_utm**: Fortinet Firewall logs.
+  - **iis**: IIS web server logs.
+  - **Nessus:scan**: Vulnerability scan results.
+  - **Suricata**: IDS alerts.
+  - **stream:http**: HTTP traffic.
+  - **stream:DNS**: DNS traffic.
+  - **stream:icmp**: ICMP traffic.
+
+- **Next Steps**:
+  - **Action**: Connect to the lab and deploy the machine (IP: MACHINE_IP), which will be ready in 3-5 minutes. Begin investigation using logs in index=botsv1.
+
+**Journal Entry: Reconnaissance Phase Investigation**
+
+- **Reconnaissance Definition**:
+  - **Description**: Collecting information about the target, such as system details, web application, employees, or location.
+
+- **Initial Steps**:
+  - **Action**: Examine reconnaissance attempts on the webserver imreallynotbatman.com.
+  - **Log Sources**: Start by searching in network traffic logs: Suricata, stream:http, fortigate_utm, iis.
+
+- **Search Queries**:
+  - **Query**: `index=botsv1 imreallynotbatman.com`
+    - **Purpose**: Identify log sources containing the term "imreallynotbatman.com."
+  - **Log Sources Found**:
+    - Suricata
+    - stream:http
+    - fortigate_utm
+    - iis
+
+- **Focused Investigation**:
+  - **Query**: `index=botsv1 imreallynotbatman.com sourcetype=stream:http`
+    - **Purpose**: Search for HTTP traffic logs containing "imreallynotbatman.com."
+  - **IP Addresses Identified**:
+    - 40.80.148.42 (prevalent)
+    - 23.22.63.114
+
+- **Verification**:
+  - **Action**: Click on IP 40.80.148.42 to review logs, focusing on fields like User-Agent, Post request, URIs.
+  - **Confirmation**: Found traces of domain probing from IP 40.80.148.42.
+
+- **Further Validation**:
+  - **Query**: `index=botsv1 imreallynotbatman.com src=40.80.148.42 sourcetype=suricata`
+    - **Purpose**: Check Suricata logs for alerts related to IP 40.80.148.42.
+  - **Findings**: Reviewed Suricata logs for triggered alerts and signature information.
+
+**Journal Entry: Exploitation Phase Investigation**
+
+- **Objective**:
+  - **Description**: Determine if the attacker successfully exploited a vulnerability to gain access to the web server.
+
+- **Current Information**:
+  - **Reconnaissance Phase**: Two IPs identified; 40.80.148.42 scanning server 192.168.250.70 with Acunetix.
+
+- **Search Queries**:
+  - **Count Requests**:
+    - **Query**: `index=botsv1 imreallynotbatman.com sourcetype=stream* | stats count(src_ip) as Requests by src_ip | sort - Requests`
+      - **Purpose**: Count and sort requests by source IP.
+  - **Requests to Webserver**:
+    - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70"`
+      - **Purpose**: Find inbound traffic to IP 192.168.250.70.
+
+- **Findings**:
+  - **Traffic Analysis**:
+    - **Most Requests**: POST requests.
+    - **Search**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST`
+      - **Purpose**: Examine POST requests to web server.
+
+  - **Admin Panel Traffic**:
+    - **Query**: `index=botsv1 imreallynotbatman.com sourcetype=stream:http dest_ip="192.168.250.70" uri="/joomla/administrator/index.php"`
+      - **Purpose**: Check requests to Joomla admin login page.
+    - **Form Data Analysis**:
+      - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST uri="/joomla/administrator/index.php" | table _time uri src_ip dest_ip form_data`
+        - **Purpose**: Display login attempts with form data.
+      - **Fields Found**:
+        - Username: admin.
+        - Passwords: Multiple values.
+
+  - **Brute-Force Detection**:
+    - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST form_data=*username*passwd* | rex field=form_data "passwd=(?<creds>\w+)" | table src_ip creds`
+      - **Purpose**: Extract and display passwords used in brute-force attempts.
+    - **Results**: Identified passwords attempted with automated tool and a single Mozilla browser request from IP 40.80.148.42.
+
+- **Further Analysis**:
+  - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST form_data=*username*passwd* | rex field=form_data "passwd=(?<creds>\w+)" | table _time src_ip uri http_user_agent creds`
+    - **Purpose**: Examine key fields and user agents.
+  - **Observation**: Continuous brute-force from IP 23.22.63.114 and a single password attempt from IP 40.80.148.42 using Mozilla browser.
+
+**Journal Entry: Installation Phase Investigation**
+
+- **Objective**:
+  - **Description**: Investigate whether the attacker installed a backdoor or malicious application on the compromised server to maintain control or gain further access.
+
+- **Current Information**:
+  - **Previous Phase**: Attacker compromised the server via brute-force attack.
+
+- **Initial Search**:
+  - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" *.exe`
+    - **Purpose**: Identify any HTTP traffic containing executable files.
+  - **Findings**:
+    - **File Names**: `3791.exe` and `agent.php` identified in the `part_filename{}` field.
+
+- **Further Investigation**:
+  - **Query**: `index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" "part_filename{}"="3791.exe"`
+    - **Purpose**: Confirm if `3791.exe` was uploaded from known attacker IPs.
+
+- **Execution Check**:
+  - **Query**: `index=botsv1 "3791.exe"`
+    - **Purpose**: Investigate if the file `3791.exe` was executed on the server.
+  - **Log Sources**:
+    - Sysmon
+    - WinEventlog
+    - fortigate_utm
+
+- **Execution Evidence**:
+  - **Query**: `index=botsv1 "3791.exe" sourcetype="XmlWinEventLog" EventCode=1`
+    - **Purpose**: Find process creation logs for `3791.exe`.
+  - **Findings**: Confirmed that `3791.exe` was executed on the server. Further validation using other host-centric log sources can be performed to corroborate results.
+
+**Journal Entry: Actions on Objectives Investigation**
+
+- **Objective**:
+  - **Description**: Determine what changes were made to the website that led to its defacement.
+
+- **Initial Investigation**:
+  - **Search Query**: `index=botsv1 dest=192.168.250.70 sourcetype=suricata`
+    - **Purpose**: Check for external IP communications with the web server.
+
+- **Findings**:
+  - No external IPs communicating with the server.
+  - Changed query to: `index=botsv1 src=192.168.250.70 sourcetype=suricata`
+    - **Purpose**: Investigate outbound traffic from the web server.
+
+- **Outbound Traffic**:
+  - Observed outbound traffic to external IPs, which is unusual for a web server.
+  - **Query**: `index=botsv1 src=192.168.250.70 sourcetype=suricata dest_ip=23.22.63.114`
+    - **Purpose**: Analyze traffic to specific external IPs.
+
+- **Interesting Findings**:
+  - URL field shows PHP files and a JPEG file.
+  - **Query**: `index=botsv1 url="/poisonivy-is-coming-for-you-batman.jpeg" dest_ip="192.168.250.70" | table _time src dest_ip http.hostname url`
+    - **Purpose**: Trace the origin of the suspicious JPEG file.
+
+- **Conclusion**:
+  - **JPEG File**: `poisonivy-is-coming-for-you-batman.jpeg` was downloaded from `prankglassinebracket.jumpingcrab.com`.
+  - This file likely contributed to the website defacement.
+
+**Journal Entry: Command and Control Investigation**
+
+- **Objective**:
+  - **Description**: Identify the IP address that the attacker used for command and control (C2) by resolving the Dynamic DNS associated with the attack.
+
+- **Investigation Steps**:
+  - **Initial Query**: `index=botsv1 sourcetype=fortigate_utm "poisonivy-is-coming-for-you-batman.jpeg"`
+    - **Purpose**: Review Fortinet firewall logs for evidence of communication to/from the attacker’s IP.
+
+- **Findings**:
+  - **Fields**: `src_ip`, `dest_ip`, and `url` contain the Fully Qualified Domain Name (FQDN) related to the JPEG file.
+  - **Confirmed IP**: The dynamic DNS resolved to an IP used by the attacker.
+
+- **Verification**:
+  - **Query**: `index=botsv1 sourcetype=stream:http dest_ip=23.22.63.114 "poisonivy-is-coming-for-you-batman.jpeg" src_ip=192.168.250.70`
+    - **Purpose**: Confirm the suspicious domain by reviewing HTTP logs.
+
+- **Additional Confirmation**:
+  - **Note**: To further verify, check `stream:dns` logs for DNS queries sent from the webserver during the infection period. This helps confirm the domain resolution and communication with the C2 server.
+
+**Journal Entry: Weaponization Phase Investigation**
+
+- **Objective**:
+  - **Description**: Gather additional information about the adversary's tactics, including IP addresses and domains used in the weaponization phase.
+
+- **Domains and IPs**:
+  - **Domain Found**: `prankglassinebracket.jumpingcrab.com`
+    - **Task**: Search for associated IP addresses and domains.
+  
+- **Robtex Investigation**:
+  - **Search Domain**: `prankglassinebracket.jumpingcrab.com`
+    - **Result**: Found associated IP addresses and related domains.
+    - **Reference**: [Robtex Lookup for Domain](https://www.robtex.com/dns-lookup/prankglassinebracket.jumpingcrab.com)
+  - **Search IP Address**: `23.22.63.114`
+    - **Result**: Identified domains similar to Wayne Enterprise’s site.
+    - **Reference**: [Robtex Lookup for IP](https://www.robtex.com/ip-lookup/23.22.63.114)
+
+- **Virustotal Investigation**:
+  - **Search IP Address**: `23.22.63.114`
+    - **Result**: Found domains associated with this IP, including `www.po1s0n1vy.com`.
+    - **Reference**: [Virustotal Lookup for IP](https://www.virustotal.com)
+  - **Search Domain**: `www.po1s0n1vy.com`
+    - **Purpose**: Verify domain associations and additional context.
+
+- **Additional Lookup**:
+  - **Whois Information**: [Whois Domain Tools](https://whois.domaintools.com)
+    - **Purpose**: Extract valuable registration information for associated domains.
+
+This investigation provides insight into the adversary’s preparation and pre-staged infrastructure used for the attack.
+
+DeliveryImage representing Delivery phase
+
+Attackers create malware and infect devices to gain initial access or evade defenses and find ways to deliver it through different means. We have identified various IP addresses, domains and Email addresses associated with this adversary. Our task for this lesson would be to use the information we have about the adversary and use various Threat Hunting platforms and OSINT sites to find any malware linked with the adversary.
+
+Threat Intel report suggested that this adversary group Poison lvy appears to have a secondary attack vector in case the initial compromise fails. Our objective would be to understand more about the attacker and their methodology and correlate the information found in the logs with various threat Intel sources.
+
+OSINT sites
+
+    Virustotal
+    ThreatMiner
+    Hybrid-Analysis
+
+ThreatMiner
+
+Let's start our investigation by looking for the IP 23.22.63.114 on the Threat Intel site ThreatMiner.
+
+
+We found three files associated with this IP, from which one file with the hash value  c99131e0169171935c5ac32615ed6261 seems to be malicious and something of interest.
+
+Now, click on this MD5 hash value to see the metadata and other important information about this particular file.
+
+
+Reference: https://www.threatminer.org/host.php?q=23.22.63.114#gsc.tab=0&gsc.q=23.22.63.114&gsc.page=1
+
+Virustotal
+
+Open virustotal.com and search for the hash on the virustotal now. Here, we can get information about the metadata about this Malware in the Details tab.
+
+
+Reference: https://www.virustotal.com/gui/file/9709473ab351387aab9e816eff3910b9f28a7a70202e250ed46dba8f820f34a8/community
+
+Hybrid-Analysis
+
+Hybrid Analysis is a beneficial site that shows the behavior Analysis of any malware. Here you can look at all the activities performed by this Malware after being executed. Some of the information that Hybrid-Analysis provides are:
+
+    Network Communication.
+    DNS Requests
+    Contacted Hosts with Country Mapping
+    Strings
+    MITRE ATT&CK Mapping
+    Malicious Indicators.
+    DLLs Imports / Exports
+    Mutex Information if created
+    File Metadata
+    Screenshots
+
+
+Scroll down, and you will get a lot of information about this Malware.
+
+**Conclusion: SOC Analyst Cyber Attack Investigation**
+
+In this engaging exercise, we investigated a cyber-attack where the attacker defaced the Wayne Enterprise website, `imreallynotbatman.com`. We mapped the attacker's activities through the seven phases of the Cyber Kill Chain. Here’s a recap of our findings:
+
+### **Reconnaissance Phase:**
+- **Activity**: Identified reconnaissance activity by the attacker.
+- **Findings**:
+  - **IP Address**: `40.80.148.42` was scanning the web server.
+  - **Tool Used**: Acunetix web scanner.
+
+### **Exploitation Phase:**
+- **Activity**: Investigated exploitation attempts on the server.
+- **Findings**:
+  - **Brute-Force Attacks**: Originated from IP `23.22.63.114`.
+  - **Access IP**: `40.80.148.42`.
+  - **Attempts**: 142 unique brute-force attempts, with one successful.
+
+### **Installation Phase:**
+- **Activity**: Checked for malicious payloads and their execution.
+- **Findings**:
+  - **Malicious File**: `3791.exe` was uploaded and executed on the server.
+  - **Sysmon Logs**: Provided the MD5 hash of the file.
+
+### **Action on Objective:**
+- **Activity**: Assessed the defacement of the web server.
+- **Findings**:
+  - **Defacement File**: Identified the file used for the defacement.
+
+### **Weaponization Phase:**
+- **Activity**: Researched threat intelligence to identify attacker’s infrastructure.
+- **Findings**:
+  - **Domain**: `prankglassinebracket.jumpingcrab.com`.
+  - **IP Address**: `23.22.63.114`.
+  - **Additional Info**: Found multiple masquerading domains and an associated email address: `Lillian.rose@po1s0n1vy.com`.
+
+### **Delivery Phase:**
+- **Activity**: Investigated secondary attack vectors via Threat Intel platforms.
+- **Findings**:
+  - **Malware**: `MirandaTateScreensaver.scr.exe` associated with the adversary.
+  - **MD5 Hash**: `c99131e0169171935c5ac32615ed6261`.
+
+This thorough analysis provides a detailed understanding of the attack, from reconnaissance through to the final delivery phase, highlighting the adversary’s methods and tools used throughout the attack lifecycle.
