@@ -1,3 +1,5 @@
+### Date Completed: 04/23/2024 ###
+
 The System Configuration utility (MSConfig) is a vital tool designed for advanced troubleshooting on Windows systems, specifically to diagnose startup issues. It offers five tabs: General, Boot, Services, Startup, and Tools.
 
 - General Tab: Allows selection of devices and services to load during system startup (Normal, Diagnostic, or Selective).
