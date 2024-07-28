@@ -1,1 +1,20 @@
+### Date Completed: 04/23/2024 ###
 
+**Journal Entry: TryHackMe | Splunk: Basics**
+
+In this post, I explored Splunk using TryHackMe, gaining hands-on experience with this leading SIEM tool. The room covered Splunk’s core components, log collection and analysis, and fundamental concepts like ingesting sample VPN logs, normalizing data into events, and searching using Splunk Processing Language (SPL).
+
+**Important Information:**
+- **Splunk Overview:** Leading SIEM solution for real-time log collection, analysis, and correlation.
+- **Components:** Forwarder (collects data), Indexer (processes and stores data), Search Head (enables searching and reporting).
+- **Tasks:**
+  - Deployed a virtual machine and connected via web browser or VPN.
+  - Added data to Splunk, specifically focusing on VPN logs, with steps for uploading and indexing data.
+  - Performed searches and queries to analyze log data and identify specific events and patterns.
+
+**Task Highlights:**
+- **Forwarder:** Collects and sends data to Splunk.
+- **Monitor Option:** Used for collecting data from files and ports.
+- **VPN Logs Ingestion:** Uploaded and indexed logs, searched for specific events (e.g., user activity, IP address events).
+
+By navigating and utilizing Splunk, I gained a deeper understanding of its capabilities in improving network visibility and speeding up threat detection.
