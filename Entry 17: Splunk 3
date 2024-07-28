@@ -1,1 +1,148 @@
+### Journal Entry: AWS & Other Events
+
+**Key Activities:**
+- **Command Usage:** 
+  - Get source types with 'hash': `index="botsv3" hash | stats count by sourcetype | sort -count`
+  - Get overview: `| tstats count where index="botsv3" by sourcetype`
+
+- **AWS API Activity without MFA:**
+  - Field: `userIdentity.sessionContext.attributes.mfaAuthenticated`
+
+- **Web Server Processor Number:**
+  - Number: `E5–2676`
+
+- **S3 Bucket Public Access Event:**
+  - Event ID: Use `aws:cloudtrail` sourcetype and compare events.
+  - Username: `bstoll`
+  - Bucket Name: `frotlywebcode`
+  - Uploaded File: `OPEN_BUCKET_PLEASE_FIX.txt`
+
+- **FQDN of Endpoint with Different OS:**
+  - Query: `index="botsv3" sourcetype="winhostmon" eventtype=hostmon_os | dedup host | table os`
+  - Related Host: Use `sourcetype="wineventlog"` to find FQDN.
+
+**Description:**
+Conducting these tasks highlighted the importance of knowing source types for efficient data pivoting and query formulation, crucial for pinpointing specific events and details in cybersecurity investigations.
+
+
+### Journal Entry: Cryptomining Events
+
+**Key Activities:**
+- **Process with 100% CPU Utilization:**
+  - Name: `chome#5`
+  - Query: `index=botsv3 sourcetype="perfmonmk:process" process_cpu_used_percent=100`
+
+- **Hostname of Endpoint Mining Monero:**
+  - Hostname: `BSTOLL-L`
+
+- **First Seen Signature ID of Coin Miner Threat:**
+  - Query: `index="botsv3" sourcetype="Symantec:*" *coin* | table CIDS_Signature_ID _time host`
+  - Signature ID: `30358`
+
+- **Severity of Coin Miner Threat:**
+  - Source: Symantec's website
+  - Severity: `Medium`
+  - Link: [Symantec Threat Detail](https://www.broadcom.com/support/security-center/attacksignatures/detail?asid=30358)
+
+- **Hostname Showing Evidence of Defeating Threat:**
+  - Hostname: `BTUN-L`
+
+**Description:**
+Identifying cryptomining activity on Frothly endpoints involved querying process utilization and security logs, highlighting the importance of understanding event order functions and data sources in cybersecurity investigations.
+
+### Journal Entry: More AWS Events
+
+**Key Activities:**
+- **IAM User Access Key with Most Errors:**
+  - Access Key ID: `AKIAJOGCDXJ5NW5PXUPA`
+  - Query: `index="botsv3" sourcetype="aws:cloudtrail" user=bstoll userIdentity.accessKeyId="*" eventtype=aws_cloudtrail_iam_events`
+
+- **AWS Support Case ID for Compromised Account:**
+  - Support Case ID: `5244329601`
+  - Query: `index="botsv3" sourcetype="stream:smtp" (aws OR compromise) (account)`
+
+- **Leaked Secret Access Key:**
+  - Secret Access Key: `Bx8/gTsYC98T0oWiFhpmdROqhELPtXJSR9vFPNGk`
+  - Query: `index="botsv3" sourcetype="stream:smtp" (AWS OR Web Services)`
+
+- **Unauthorized Key Creation Attempt:**
+  - Resource Name: `nullweb_admin`
+  - Query: `index="botsv3" sourcetype="aws:cloudtrail" AKIAJOGCDXJ5NW5PXUPA eventName=CreateAccessKey`
+
+- **Unauthorized Account Description Attempt:**
+  - Full User Agent String: [Pending Answer]
+  - Query: `index="botsv3" sourcetype="aws:cloudtrail" AKIAJOGCDXJ5NW5PXUPA errorCode="Client.UnauthorizedOperation"`
+
+**Description:**
+Investigating AWS security events revealed key details about unauthorized access attempts and compromised credentials, emphasizing the critical need for monitoring and securing IAM resources to prevent data breaches.
+
+### Journal Entry: Pivoting Back to Endpoint Events
+
+**Key Activities:**
+- **User Agent String for Malicious OneDrive Upload:**
+  - User Agent: `Mozilla/5.0 (X11; U; Linux i686; ko-KP; rv: 19.1br) Gecko/20130508 Fedora/1.9.1–2.5.rs3.0 NaenaraBrowser/3.5b4`
+  - Query: `index="botsv3" sourcetype=ms:o365:management onedrive upload SourceFileName="Upload.aspx"`
+
+- **Name of Macro-Enabled Malware Attachment:**
+  - Filename: `Frothly-Brewery-Financial-Planning-FY2019-Draft.xlsm`
+  - Query: `index="botsv3" sourcetype="stream:smtp" alert "attach_filename{}"="Malware Alert Text.txt"`
+
+- **Executable Embedded in Malware:**
+  - Executable Name: `HxTsr.exe`
+  - Query: `index="botsv3" .xlsm`
+
+- **Password for User Created by "root" on Linux System:**
+  - Password: `ilovedavidverve`
+  - Query: `source="/var/log/auth.log"  (adduser OR useradd) sourcetype="osquery:results" tomcat7`
+
+- **Name of User Created After Endpoint Compromise:**
+  - Username: `Tomcat7`
+  - Query: `index="botsv3" source="wineventlog:security" EventCode=4720`
+
+- **Groups Assigned to User After Endpoint Compromise:**
+  - Groups: `administror,user`
+  - Query: `sourcetype=wineventlog user=svcvnc`
+
+- **Process ID Listening on "Leet" Port:**
+  - Process ID: `14356`
+  - Query: `sourcetype="osquery:results" 1337`
+
+- **MD5 Value of File Downloaded to Fyodor's Endpoint:**
+  - MD5: `586EF56F4D8963DD546163AC31C865D7`
+  - Query: `sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1 host="FYODOR-L" app="*" hdoor.exe`
+
+**Description:**
+Tracking endpoint activities involved pivoting across various data sources to identify malicious uploads, malware attachments, unauthorized user creation, and network scanning activities, highlighting the importance of cross-referencing multiple logs to uncover security threats.
+
+### Journal Entry: Endpoint Events (BOTSv3 300 Series)
+
+**Key Activities:**
+
+1. **Port Number Used to Download Attack Tools:**
+   - **Port Number:** 8080
+   - **Query:** `index=botsv3 host="FYODOR-L" sourcetype="xmlwineventlog:microsoft-windows-sysmon/operational" dest_port`
+
+2. **File Containing Attack Tools:**
+   - **Filename:** `malware.zip`
+   - **Query:** `index=botsv3 host="FYODOR-L" dest_port=8080`
+
+3. **Files Remotely Streamed to /tmp Directory:**
+   - **Filenames:** `exploit.sh, payload.tar.gz`
+   - **Query:** `index=botsv3 source="/tmp/*.*"`
+
+4. **Number of Exposed Frothly Customer Emails:**
+   - **Exposed Emails:** 8
+   - **Query:** `index=botsv3 sourcetype="stream:smtp" hoppy`
+   - **Field Check:** `SENDER`, `ATTACH_FILENAME`, `content_body`
+
+5. **Path of URL Accessed by Command and Control Server:**
+   - **Full Path:** `/control/payload`
+   - **Query:** `index=botsv3 sourcetype="xmlwineventlog:microsoft-windows-sysmon/operational" parent_process="C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"`
+
+6. **Short Hostnames Contacting C&C Server:**
+   - **Hostnames:** `FYODOR-L, SPARKY`
+   - **Query:** `index=botsv3 sourcetype="xmlwineventlog:microsoft-windows-sysmon/operational" parent_process="C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"`
+
+**Description:**
+Analyzing endpoint events revealed the specifics of how adversaries downloaded attack tools and exfiltrated data. Detailed examination of logs and fields enabled the identification of malicious activities, such as port usage, file transfers, email breaches, and command and control communications, underscoring the importance of thorough log analysis and field checks in cybersecurity investigations.
 
